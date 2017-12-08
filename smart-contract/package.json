@@ -1,0 +1,18 @@
+{
+  "name": "smart-contract",
+  "version": "1.0.0",
+  "description": "airdrop smart contract",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "author": "482.solutions",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "truffle": "^4.0.1",
+    "zeppelin-solidity": "^1.4.0"
+  }
+}
