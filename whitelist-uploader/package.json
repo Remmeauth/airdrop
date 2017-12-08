@@ -1,0 +1,14 @@
+{
+  "name": "whitelist-uploader",
+  "version": "1.0.0",
+  "description": "Upload a whitelist to the airdrop contract",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "482.solutions",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "firebase-admin": "^5.5.1"
+  }
+}
