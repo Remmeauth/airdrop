@@ -9,6 +9,7 @@
   "author": "482.solutions",
   "license": "UNLICENSED",
   "dependencies": {
-    "firebase-admin": "^5.5.1"
+    "firebase-admin": "^5.5.1",
+    "web3": "^1.0.0-beta.26"
   }
 }
