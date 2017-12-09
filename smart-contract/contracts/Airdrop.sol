@@ -5,6 +5,7 @@ import 'zeppelin-solidity/contracts/token/ERC20.sol';
 contract Airdrop {
     uint256 constant INITIAL_ETH_PRICE_USD = 470;
     uint256 constant BONUS_PERCENTAGE = 20;
+    uint256 constant MAXIMUM_ETH_PRICE_USD = 2000;
     address whitelistSupplier;
     ERC20 token;
     mapping (address => bool) performed;
@@ -29,9 +30,9 @@ contract Airdrop {
     }
 
     function Airdrop(address _whitelistSupplier, address _token, address _returnAddress) {
-        require(_whitelistSupplier == 0x0);
-        require(_token == 0x0);
-        require(_returnAddress == 0x0);
+        require(_whitelistSupplier != 0x0);
+        require(_token != 0x0);
+        require(_returnAddress != 0x0);
         whitelistSupplier = _whitelistSupplier;
         token = ERC20(_token);
         returnAddress = _returnAddress;
@@ -43,13 +44,18 @@ contract Airdrop {
         require (!performed[_to]);
         uint256 initialAmount = token.balanceOf(_to);
         uint256 priceDifference = 0;
-        uint256 actualPrice = _actualPrice;
-        if (_actualPrice > INITIAL_ETH_PRICE_USD) {
+        if (_actualPrice > INITIAL_ETH_PRICE_USD && _actualPrice < MAXIMUM_ETH_PRICE_USD) {
             priceDifference = _actualPrice - INITIAL_ETH_PRICE_USD;
+        } else if (_actualPrice >= MAXIMUM_ETH_PRICE_USD) {
+            priceDifference = MAXIMUM_ETH_PRICE_USD - INITIAL_ETH_PRICE_USD;
         } else {
-            actualPrice = INITIAL_ETH_PRICE_USD;
+            priceDifference = 0;
         }
-        uint256 increase = (initialAmount + priceDifference * actualPrice / INITIAL_ETH_PRICE_USD) * BONUS_PERCENTAGE / 100;
+        uint256 airdropIncrease = initialAmount * priceDifference / INITIAL_ETH_PRICE_USD;
+        uint256 bonusToInitial = initialAmount * BONUS_PERCENTAGE / 100;
+        uint256 bonusToAirdrop = airdropIncrease * BONUS_PERCENTAGE / 100;
+        uint256 increase = airdropIncrease + bonusToInitial + bonusToAirdrop;
+        performed[_to] = true;
         token.transfer(_to, increase);
         AirdropPerformed(_to, initialAmount, increase + initialAmount, _actualPrice);
     }
