@@ -4,7 +4,6 @@ import 'zeppelin-solidity/contracts/token/ERC20.sol';
 
 contract Airdrop {
     uint256 constant INITIAL_ETH_PRICE_USD = 470;
-    uint256 constant BONUS_PERCENTAGE = 20;
     uint256 constant MAXIMUM_ETH_PRICE_USD = 2000;
     address whitelistSupplier;
     ERC20 token;
@@ -51,10 +50,7 @@ contract Airdrop {
         } else {
             priceDifference = 0;
         }
-        uint256 airdropIncrease = initialAmount * priceDifference / INITIAL_ETH_PRICE_USD;
-        uint256 bonusToInitial = initialAmount * BONUS_PERCENTAGE / 100;
-        uint256 bonusToAirdrop = airdropIncrease * BONUS_PERCENTAGE / 100;
-        uint256 increase = airdropIncrease + bonusToInitial + bonusToAirdrop;
+        uint256 increase = initialAmount * priceDifference / INITIAL_ETH_PRICE_USD;
         performed[_to] = true;
         token.transfer(_to, increase);
         AirdropPerformed(_to, initialAmount, increase + initialAmount, _actualPrice);

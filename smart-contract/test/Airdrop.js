@@ -15,19 +15,19 @@ contract('Airdrop', (accounts) => {
         await token.transfer(airdrop.address, 10000, { from: accounts[0] });
     });
 
-    it('test airdrop correctness without increase (bonus only)', async () => {
+    it('test airdrop correctness without increase', async () => {
         await airdrop.performAirdrop(accounts[1], 470, { from: accounts[0] });
-        assert.equal(120, await token.balanceOf.call(accounts[1]));
+        assert.equal(100, await token.balanceOf.call(accounts[1]));
     });
 
-    it('test airdrop correctness without increase (bonus + 1.5 times rate increase)', async () => {
+    it('test airdrop correctness wit 1.5 times rate increase)', async () => {
         await airdrop.performAirdrop(accounts[2], 705, { from: accounts[0] });
-        assert.equal(180, await token.balanceOf.call(accounts[2]));
+        assert.equal(150, await token.balanceOf.call(accounts[2]));
     });
 
-    it('test airdrop correctness without increase (bonus + 2 times rate increase)', async () => {
+    it('test airdrop correctness with 2 times rate increase)', async () => {
         await airdrop.performAirdrop(accounts[3], 940, { from: accounts[0] });
-        assert.equal(240, await token.balanceOf.call(accounts[3]));
+        assert.equal(200, await token.balanceOf.call(accounts[3]));
     });
 
     it('ensure that airdrop cannot be performed twice', async () => {
@@ -39,9 +39,9 @@ contract('Airdrop', (accounts) => {
         await expectThrow(airdrop.performAirdrop(accounts[5], 940, { from: accounts[1] }));
     });
 
-    it('test airdrop correctness with dropped rate (bonus only)', async () => {
+    it('test airdrop correctness with dropped rate', async () => {
         await airdrop.performAirdrop(accounts[6], 200, { from: accounts[0] });
-        assert.equal(120, await token.balanceOf.call(accounts[6]));
+        assert.equal(100, await token.balanceOf.call(accounts[6]));
     });
 
     it('only authorized account can finalize', async () => {
@@ -67,6 +67,6 @@ contract('Airdrop', (accounts) => {
 
     it('try rate more than maximum', async () => {
         await airdrop.performAirdrop(accounts[8], 2100, { from: accounts[0] }); 
-        assert.equal(510, await token.balanceOf.call(accounts[8]));
+        assert.equal(425, await token.balanceOf.call(accounts[8]));
     });
 });
