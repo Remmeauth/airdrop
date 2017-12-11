@@ -12,7 +12,7 @@ contract Airdrop {
     address returnAddress;
     bool finalized;
 
-    event AirdropPerformed(address indexed _to, uint256 _initialAmount, uint256 finalAmount, uint256 _actualETHPrice);
+    event AirdropPerformed(address indexed _to, uint256 _initialAmount, uint256 _finalAmount, uint256 _actualETHPrice);
 
     modifier onlyWhitelistSupplier() {
         require(msg.sender == whitelistSupplier);
