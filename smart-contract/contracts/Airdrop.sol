@@ -41,6 +41,11 @@ contract Airdrop {
         finalized = false;
     }
 
+    function kill() onlyReturnAddress() {
+        token.transfer(returnAddress, token.balanceOf(address(this)));
+        selfdestruct(returnAddress);
+    }
+
     function performAirdrop(address _to, uint256 _actualPrice) onlyWhitelistSupplier() notFinalized() {
         require(_to != 0x0);
         require (!performed[_to]);
@@ -56,7 +61,7 @@ contract Airdrop {
         uint256 increase = initialAmount.mul(priceDifference).div(INITIAL_ETH_PRICE_USD);
         performed[_to] = true;
         token.transfer(_to, increase);
-        AirdropPerformed(_to, initialAmount, increase + initialAmount, _actualPrice);
+        AirdropPerformed(_to, initialAmount, increase.add(initialAmount), _actualPrice);
     }
 
     function finalize() onlyReturnAddress() notFinalized() {
