@@ -69,7 +69,7 @@ contract('Airdrop', (accounts) => {
 
     it('cannot finalize twice', async () => {
         await airdrop.finalize({ from: accounts[1] });
-        await expectThrow(airdrop.finalize({ from: accounts[1] }))
+        await expectThrow(airdrop.finalize({ from: accounts[1] }));
     });
 
     it('cannot send funds after finalization', async () => {
@@ -80,7 +80,7 @@ contract('Airdrop', (accounts) => {
     it('kill can only be called after finalization', async () => {
         await expectThrow(airdrop.kill({ from: accounts[1] }));
         await airdrop.finalize({ from: accounts[1] });
-        airdrop.kill({ from: accounts[1] })
+        airdrop.kill({ from: accounts[1] });
     });
 
     it('kill can only be called by the authorized account', async () => {
