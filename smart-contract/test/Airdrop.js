@@ -74,4 +74,16 @@ contract('Airdrop', (accounts) => {
         await airdrop.finalize({ from: accounts[1] });
         await expectThrow(airdrop.performAirdrop(accounts[9], 200, { from: accounts[0] }));
     });
+
+    it('kill can only be called after finalization', async () => {
+        await expectThrow(airdrop.kill({ from: accounts[1] }));
+        await airdrop.finalize({ from: accounts[1] });
+        airdrop.kill({ from: accounts[1] })
+    });
+
+    it('kill can only be called by the authorized account', async () => {
+        await airdrop.finalize({ from: accounts[1] });
+        await expectThrow(airdrop.kill({ from: accounts[0] }));
+        await airdrop.kill({ from: accounts[1] });
+    });
 });

@@ -42,7 +42,7 @@ contract Airdrop {
     }
 
     function kill() onlyReturnAddress() {
-        token.transfer(returnAddress, token.balanceOf(address(this)));
+        require(finalized);
         selfdestruct(returnAddress);
     }
 
