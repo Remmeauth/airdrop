@@ -25,12 +25,12 @@ contract('Airdrop', (accounts) => {
         assert.equal(100, await token.balanceOf.call(accounts[2]));
     });
 
-    it('test airdrop correctness wit 1.5 times rate increase)', async () => {
+    it('test airdrop correctness with 1.5 times rate increase', async () => {
         await airdrop.performAirdrop(accounts[3], 705, { from: accounts[0] });
         assert.equal(150, await token.balanceOf.call(accounts[3]));
     });
 
-    it('test airdrop correctness with 2 times rate increase)', async () => {
+    it('test airdrop correctness with 2 times rate increase', async () => {
         await airdrop.performAirdrop(accounts[4], 940, { from: accounts[0] });
         assert.equal(200, await token.balanceOf.call(accounts[4]));
     });
