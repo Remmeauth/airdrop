@@ -1,3 +1,5 @@
+/* global assert: true */
+
 module.exports = async promise => {
     try {
         await promise;

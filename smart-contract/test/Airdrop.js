@@ -1,3 +1,5 @@
+/* global artifacts contract beforeEach it assert: true */
+
 let expectThrow = require('./helpers/expectThrow.js');
 let Token = artifacts.require('./Token.sol');
 let Airdrop = artifacts.require('./Airdrop.sol');
