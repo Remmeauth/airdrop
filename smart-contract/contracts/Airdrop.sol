@@ -31,7 +31,7 @@ contract Airdrop {
         _;
     }
 
-    function Airdrop(address _whitelistSupplier, address _token, address _returnAddress) {
+    function Airdrop(address _whitelistSupplier, address _token, address _returnAddress) public {
         require(_whitelistSupplier != 0x0);
         require(_token != 0x0);
         require(_returnAddress != 0x0);
@@ -41,12 +41,12 @@ contract Airdrop {
         finalized = false;
     }
 
-    function kill() onlyReturnAddress() {
+    function kill() public onlyReturnAddress() {
         require(finalized);
         selfdestruct(returnAddress);
     }
 
-    function performAirdrop(address _to, uint256 _actualPrice) onlyWhitelistSupplier() notFinalized() {
+    function performAirdrop(address _to, uint256 _actualPrice) public onlyWhitelistSupplier() notFinalized() {
         require(_to != 0x0);
         require (!performed[_to]);
         uint256 initialAmount = token.balanceOf(_to);
@@ -64,7 +64,7 @@ contract Airdrop {
         AirdropPerformed(_to, initialAmount, increase.add(initialAmount), _actualPrice);
     }
 
-    function finalize() onlyReturnAddress() notFinalized() {
+    function finalize() public onlyReturnAddress() notFinalized() {
         finalized = true;
         token.transfer(returnAddress, token.balanceOf(address(this)));
     }
