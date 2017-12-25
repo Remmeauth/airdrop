@@ -13,8 +13,8 @@ firebase.initializeApp({
     databaseURL: 'https://remme-ico.firebaseio.com'
 });
 
-firebase.firestore().collection('users').get().then((snapshot) => {
-    snapshot.forEach((doc) => {
+firebase.firestore().collection('users').get().then(async (snapshot) => {
+    await snapshot.forEach(async (doc) => {
         let hash = doc.data().hash;
         console.log(hash);
         console.log(await contract.methods.performAirdrop(hash, settings.actualRate).send());
