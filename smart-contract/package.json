@@ -7,12 +7,16 @@
     "test": "test"
   },
   "scripts": {
-    "test": "truffle test"
+    "test": "truffle test",
+    "build-contracts": "sol-merger './contracts/*.sol' ./build"
   },
   "author": "482.solutions",
   "license": "UNLICENSED",
   "dependencies": {
     "truffle": "^4.0.1",
     "zeppelin-solidity": "^1.4.0"
+  },
+  "devDependencies": {
+    "sol-merger": "^0.1.2"
   }
 }
