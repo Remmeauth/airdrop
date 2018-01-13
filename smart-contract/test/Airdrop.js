@@ -17,43 +17,64 @@ contract('Airdrop', (accounts) => {
         await token.transfer(airdrop.address, 10000, { from: accounts[0] });
     });
 
+    it('actual price should be initialized with initial price', async () => {
+        let actualPrice = await airdrop.actualPrice.call();
+        let initialPrice = await airdrop.INITIAL_ETH_PRICE_USD.call();
+        assert.isOk(actualPrice.equals(initialPrice));
+    });
+
+    it('only owner can update the actual price', async () => {
+        await expectThrow(airdrop.setActualPrice(500, { from: accounts[1] }));
+        await expectThrow(airdrop.setActualPrice(500, { from: accounts[2] }));
+        await expectThrow(airdrop.setActualPrice(500, { from: accounts[3] }));
+        await airdrop.setActualPrice(500, { from: accounts[0] });
+        let actualPrice = await airdrop.actualPrice.call();
+        assert.isOk(actualPrice.equals(500));
+    });
+
     it('test airdrop correctness without increase (lower than current price)', async () => {
-        await airdrop.performAirdrop(accounts[1], 400, { from: accounts[0] });
-        assert.equal(100, await token.balanceOf.call(accounts[1]));
+        await airdrop.setActualPrice(400, { from: accounts[0] });
+        await expectThrow(airdrop.performAirdrop(accounts[1], { from: accounts[0] }));
     });
 
     it('test airdrop correctness without increase (equal to current price)', async () => {
-        await airdrop.performAirdrop(accounts[2], 470, { from: accounts[0] });
-        assert.equal(100, await token.balanceOf.call(accounts[2]));
+        await airdrop.setActualPrice(470, { from: accounts[0] });
+        await expectThrow(airdrop.performAirdrop(accounts[2], { from: accounts[0] }));
     });
 
     it('test airdrop correctness with 1.5 times rate increase', async () => {
-        await airdrop.performAirdrop(accounts[3], 705, { from: accounts[0] });
+        await airdrop.setActualPrice(705, { from: accounts[0] });
+        await airdrop.performAirdrop(accounts[3], { from: accounts[0] });
         assert.equal(150, await token.balanceOf.call(accounts[3]));
     });
 
     it('test airdrop correctness with 2 times rate increase', async () => {
-        await airdrop.performAirdrop(accounts[4], 940, { from: accounts[0] });
+        await airdrop.setActualPrice(940, { from: accounts[0] });
+        await airdrop.performAirdrop(accounts[4], { from: accounts[0] });
         assert.equal(200, await token.balanceOf.call(accounts[4]));
     });
 
     it('test airdrop correctness with increase equal to maximum', async () => {
-        await airdrop.performAirdrop(accounts[5], 2000, { from: accounts[0] }); 
+        await airdrop.setActualPrice(2000, { from: accounts[0] });
+        await airdrop.performAirdrop(accounts[5], { from: accounts[0] }); 
         assert.equal(425, await token.balanceOf.call(accounts[5]));
     });
 
     it('test airdrop correctness with increase more than maximum', async () => {
-        await airdrop.performAirdrop(accounts[6], 2100, { from: accounts[0] }); 
+        await airdrop.setActualPrice(2100, { from: accounts[0] });
+        await airdrop.performAirdrop(accounts[6], { from: accounts[0] }); 
         assert.equal(425, await token.balanceOf.call(accounts[6]));
     });
 
     it('ensure that airdrop cannot be performed twice', async () => {
-        await airdrop.performAirdrop(accounts[7], 940, { from: accounts[0] });
-        await expectThrow(airdrop.performAirdrop(accounts[7], 940, { from: accounts[0] }));
+        await airdrop.setActualPrice(940, { from: accounts[0] });
+        await airdrop.performAirdrop(accounts[7], { from: accounts[0] });
+        await expectThrow(airdrop.performAirdrop(accounts[7], { from: accounts[0] }));
     });
 
     it('ensure that only authorized account can perform airdrop', async () => {
-        await expectThrow(airdrop.performAirdrop(accounts[8], 940, { from: accounts[1] }));
+        await airdrop.setActualPrice(940, { from: accounts[0] });
+        await expectThrow(airdrop.performAirdrop(accounts[8], { from: accounts[1] }));
     });
 
     it('only authorized account can finalize', async () => {
@@ -73,8 +94,9 @@ contract('Airdrop', (accounts) => {
     });
 
     it('cannot send funds after finalization', async () => {
+        await airdrop.setActualPrice(940, { from: accounts[0] });        
         await airdrop.finalize({ from: accounts[1] });
-        await expectThrow(airdrop.performAirdrop(accounts[9], 200, { from: accounts[0] }));
+        await expectThrow(airdrop.performAirdrop(accounts[9], { from: accounts[0] }));
     });
 
     it('kill can only be called after finalization', async () => {
