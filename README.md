@@ -1,6 +1,8 @@
-# Ethereum Price Protection for REMME Pre-Sale Participants
+# Airdrop for pre-sale participants
 
-See the announcement [here](https://medium.com/remme/introducing-ethereum-price-protection-for-remme-pre-sale-participants-271b349e7c80).
+Ethereum Price Protection program developed to offer a hedge against Ethereum price rises between pre-sale in December and February, when our public sale occurs. Airdrop with additional REM tokens to the value of potential increase in Ethereum’s dollar value will be sent few days preor to the public sale.
+
+Read more details [here](https://medium.com/remme/introducing-ethereum-price-protection-for-remme-pre-sale-participants-271b349e7c80).
 
 ## For developers
 
